@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
         btnNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent();
+                Intent i = new Intent(MainActivity.this, ListaProductos.class);
+                i.putExtra("NUEVO_PEDIDO", 1);
                 startActivity(i);
             }
         });
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         btnListaProductos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.super.getBaseContext(), ListaProductos.class);
+                Intent i = new Intent(MainActivity.this, ListaProductos.class);
                 startActivity(i);
             }
         });
