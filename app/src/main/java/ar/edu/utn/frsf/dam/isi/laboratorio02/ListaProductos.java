@@ -1,5 +1,6 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,9 +42,7 @@ public class ListaProductos extends AppCompatActivity {
 
         Intent i = getIntent();
         int nvo = i.getIntExtra("NUEVO_PEDIDO",0);
-        if (nvo==1){
-
-        }else{
+        if (!(nvo==1)){
             cant.setEnabled(false);
             pedir.setEnabled(false);
         }
@@ -85,10 +84,12 @@ public class ListaProductos extends AppCompatActivity {
         pedir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i2 = new Intent (ListaProductos.this, MainActivity.class);
-                i2.putExtra("cantidad", cant.getText());
-                i2.putExtra("idProducto", selected.getId());
-                startActivity(i2);
+                Intent i2 = new Intent();
+                i2.putExtra("cantidad", Integer.parseInt(cant.getText().toString()));
+                i2.putExtra("id", selected.getId());
+                System.out.println("Llego");
+                setResult(Activity.RESULT_OK, i2);
+                finish();
             }
         });
     }

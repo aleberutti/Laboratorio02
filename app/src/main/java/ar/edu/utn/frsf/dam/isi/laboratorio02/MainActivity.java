@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
         btnNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, ListaProductos.class);
-                i.putExtra("NUEVO_PEDIDO", 1);
+                Intent i = new Intent(MainActivity.this, AltaPedido.class);
                 startActivity(i);
             }
         });
