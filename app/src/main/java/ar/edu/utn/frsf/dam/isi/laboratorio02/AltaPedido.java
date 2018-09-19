@@ -76,15 +76,27 @@ public class AltaPedido extends AppCompatActivity {
 
         lvProductos = (ListView) findViewById(R.id.lvListaProductos);
 
-
-//        listaProds.add(new Producto("ASD", "ASD", 10.0, new Categoria (50, "Fausot")));
         lstAdapter = new ArrayAdapter<Producto>(this,android.R.layout.simple_list_item_single_choice, listaProds);
         lvProductos.setAdapter(lstAdapter);
 
         lvProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, final long id) {
                 btQuitarProducto.setEnabled(true);
+
+                btQuitarProducto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listaProds.remove(position);
+                        lstAdapter.notifyDataSetChanged();
+                        double costo=0.0;
+                        for (int j = 0; j<listaProds.size(); j++){
+                            costo = listaProds.get(j).getPrecio() + costo;
+                        }
+                        tvCostoTotal.setText("Total del pedido: $" + costo);
+                    }
+                });
+
             }
         });
 
@@ -98,18 +110,7 @@ public class AltaPedido extends AppCompatActivity {
             }
         });
 
-        btQuitarProducto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listaProds.remove(lvProductos.getSelectedItemPosition()-1);
-                lstAdapter.notifyDataSetChanged();
-                double costo=0.0;
-                for (int j = 0; j<listaProds.size(); j++){
-                    costo = listaProds.get(j).getPrecio() + costo;
-                }
-                tvCostoTotal.setText("Total del pedido: $" + costo);
-            }
-        });
+
 
     }
 

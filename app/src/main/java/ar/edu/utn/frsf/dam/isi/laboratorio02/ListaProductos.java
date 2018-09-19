@@ -87,7 +87,6 @@ public class ListaProductos extends AppCompatActivity {
                 Intent i2 = new Intent();
                 i2.putExtra("cantidad", Integer.parseInt(cant.getText().toString()));
                 i2.putExtra("id", selected.getId());
-                System.out.println("Llego");
                 setResult(Activity.RESULT_OK, i2);
                 finish();
             }
