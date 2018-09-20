@@ -16,9 +16,9 @@
 
 
              <Spinner
-            android:id="@+id/cmbProductosCategoria"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                android:id="@+id/cmbProductosCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
              <TextView
@@ -28,9 +28,10 @@
                  android:text="@string/lstProd" />
 
              <ListView
-            android:id="@+id/lstProductos"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" >
+                 android:id="@+id/lstProductos"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1">
 
              </ListView>
 
