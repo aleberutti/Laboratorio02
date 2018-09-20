@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 
 public class AltaPedido extends AppCompatActivity {
@@ -112,12 +114,40 @@ public class AltaPedido extends AppCompatActivity {
 
 
 
+        btConfirmar = findViewById(R.id.btConfirmar);
+        btConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    if(etCorreo.getText().toString().isEmpty()){
+
+                        Toast.makeText(AltaPedido.this,
+                                "Debe ingresar un mail",
+                                Toast.LENGTH_LONG).show();
+                        return;
+
+                    }
+                    unPedido.setEstado(Pedido.Estado.REALIZADO);
+                    unPedido.setDireccionEnvio(etDomicilio.getText().toString());
+//                        unPedido.setFecha(etHorario.getText().toString());
+                    repositorioPedido.guardarPedido(unPedido);
+
+                    Intent historial = new Intent(AltaPedido.this, HistorialPedidos.class);
+                    startActivity(historial);
+
+            }
+        });
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode == Activity.RESULT_OK && requestCode==8){
             Producto agregado = repositorioProducto.buscarPorId(data.getExtras().getInt("id"));
+
+//            PedidoDetalle detalles = new PedidoDetalle(data.getExtras().getInt("cantidad"), agregado);
+//            detalles.setPedido(repositorioPedido.buscarPorId(data.getExtras().getInt("id")));
+
             for (int k = 0 ; k<data.getExtras().getInt("cantidad"); k++){
                 listaProds.add(agregado);
             }
@@ -132,4 +162,7 @@ public class AltaPedido extends AppCompatActivity {
             System.exit(0);
         }
     }
+
+
+
 }
