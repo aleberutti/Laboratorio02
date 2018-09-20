@@ -1,13 +1,21 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+
+import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.*;
@@ -19,11 +27,25 @@ public class ListaProductos extends AppCompatActivity {
     private ArrayAdapter<Categoria> cmbAdapter;
     private ArrayAdapter<Producto> lstAdapter;
     private ProductoRepository pr;
+    private EditText cant;
+    private Button pedir;
+    private Producto selected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_productos);
+
+        cant = findViewById(R.id.edtProdCantidad);
+        pedir = findViewById(R.id.btnProdAddPedido);
+
+        Intent i = getIntent();
+        int nvo = i.getIntExtra("NUEVO_PEDIDO",0);
+        if (!(nvo==1)){
+            cant.setEnabled(false);
+            pedir.setEnabled(false);
+        }
 
         pr= new ProductoRepository();
         cmbProductosCategoria = (Spinner) findViewById(R.id.cmbProductosCategoria);
@@ -34,8 +56,7 @@ public class ListaProductos extends AppCompatActivity {
         cmbProductosCategoria.setAdapter(cmbAdapter);
 
 
-        lstAdapter = new ArrayAdapter<Producto>(this,android.R.layout.simple_spinner_item, pr.buscarPorCategoria((Categoria)cmbProductosCategoria.getItemAtPosition(0)));
-        lstAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lstAdapter = new ArrayAdapter<Producto>(this,android.R.layout.simple_list_item_single_choice, pr.buscarPorCategoria((Categoria)cmbProductosCategoria.getItemAtPosition(0)));
         lstProductos.setAdapter(lstAdapter);
 
         cmbProductosCategoria.setOnItemSelectedListener(
@@ -53,7 +74,22 @@ public class ListaProductos extends AppCompatActivity {
                 }
         );
 
+        lstProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> lstAdapter, View view, int position, long id) {
+                selected = (Producto) lstAdapter.getItemAtPosition(position);
+            }
+        });
 
-
+        pedir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i2 = new Intent();
+                i2.putExtra("cantidad", Integer.parseInt(cant.getText().toString()));
+                i2.putExtra("id", selected.getId());
+                setResult(Activity.RESULT_OK, i2);
+                finish();
+            }
+        });
     }
 }
