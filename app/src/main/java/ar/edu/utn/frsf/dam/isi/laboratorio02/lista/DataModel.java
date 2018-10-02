@@ -30,4 +30,5 @@ public class DataModel {
     public void setEstado(String estado) { this.estado = estado; }
 
     public Integer getId() { return id; }
+
 }
