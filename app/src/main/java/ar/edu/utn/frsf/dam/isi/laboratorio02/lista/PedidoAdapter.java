@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,23 +36,89 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
 
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
+
         LayoutInflater inflater = LayoutInflater.from(this.ctx);
         View fila_historial = convertView;
-        if (fila_historial==null){
+
+        PedidosViewHolder holder;
+        Pedido ped = repositorio.buscarPorId(pedido.getId());
+
+        if (fila_historial == null){
+
             fila_historial = inflater.inflate(R.layout.fila_historial, parent, false);
-        }
-        PedidosViewHolder holder = (PedidosViewHolder) fila_historial.getTag();
-        if (holder==null){
+
             holder = new PedidosViewHolder(fila_historial);
+<<<<<<< HEAD
+
+            holder.btBorrar = convertView.findViewById(R.id.btBorrar);
+            holder.btBorrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Integer pos = (Integer) v.getTag();
+                    getItem(pos).setEstado("CANCELADO");
+                    repositorio.buscarPorId(getItem(pos).getId()).setEstado(Pedido.Estado.CANCELADO);
+                }
+            });
+
+            holder.btDetalle = convertView.findViewById(R.id.btDetalle);
+            holder.btDetalle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Integer pos = (Integer) v.getTag();
+                    Intent inte = new Intent(ctx, AltaPedido.class);
+                    inte.putExtra("Vista", getItem(pos).getId());
+                    ctx.startActivity(inte);
+                }
+            });
+
+            pedido = super.getItem(position);
+
+            holder.btBorrar.setImageResource(R.drawable.ic_action_delete);
+            holder.btBorrar.setEnabled(true);
+            holder.iv.setImageResource(R.drawable.ic_action_name);
+
+=======
             System.out.println("Se setea el tag");
+>>>>>>> d269daf1dea4d5d62090035869aaf2df7ea3be26
             fila_historial.setTag(holder);
         }
+        else{
+            holder = (PedidosViewHolder) convertView.getTag();
+        }
 
-        pedido = super.getItem(position);
-        Pedido ped = repositorio.buscarPorId(pedido.getId());
-        holder.btBorrar.setImageResource(R.drawable.ic_action_delete);
-        holder.btBorrar.setEnabled(true);
-        holder.iv.setImageResource(R.drawable.ic_action_name);
+
+
+//        if (holder==null){
+//
+//            holder = new PedidosViewHolder(fila_historial);
+//
+//            holder.btBorrar.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Integer pos = (Integer) v.getTag();
+//                    getItem(pos).setEstado("CANCELADO");
+//                    repositorio.buscarPorId(getItem(pos).getId()).setEstado(Pedido.Estado.CANCELADO);
+//                }
+//            });
+//
+//            holder.btDetalle.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Integer pos = (Integer) v.getTag();
+//                    Intent inte = new Intent(ctx, AltaPedido.class);
+//                    inte.putExtra("Vista", getItem(pos).getId());
+//                    ctx.startActivity(inte);
+//                }
+//            });
+//
+//            fila_historial.setTag(holder);
+//        }
+
+//        pedido = super.getItem(position);
+//        Pedido ped = repositorio.buscarPorId(pedido.getId());
+//        holder.btBorrar.setImageResource(R.drawable.ic_action_delete);
+//        holder.btBorrar.setEnabled(true);
+//        holder.iv.setImageResource(R.drawable.ic_action_name);
 
 
         switch (ped.getEstado()){
@@ -128,6 +195,11 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
         return fila_historial;
     }
 
+<<<<<<< HEAD
+
+    private static class ViewHolder{
+        private TextView
+=======
     private int getID(String titulo){
         do{
             if (titulo.charAt(0) >57  || titulo.charAt(0)<48){
@@ -136,6 +208,7 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
         }while (titulo.charAt(0) >57  || titulo.charAt(0)<48);
         System.out.println(Integer.parseInt(titulo));
         return Integer.parseInt(titulo);
+>>>>>>> d269daf1dea4d5d62090035869aaf2df7ea3be26
     }
 
 }
