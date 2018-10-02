@@ -15,6 +15,7 @@ public class Pedido {
     private String direccionEnvio;
     private String mailContacto;
     private Boolean retirar;
+    private double costo;
 
     public String getDireccionEnvio() {
         return direccionEnvio;
@@ -52,6 +53,7 @@ public class Pedido {
         this.direccionEnvio = direccionEnvio;
         this.mailContacto = mailContacto;
         this.retirar = retirar;
+        this.costo = 0.0;
     }
 
     public Pedido(Date fecha, Estado estado) {
@@ -83,6 +85,10 @@ public class Pedido {
     public void setDetalle(List<PedidoDetalle> detalle) {
         this.detalle = detalle;
     }
+
+    public void setCosto(double costo) { this.costo = costo; }
+
+    public double getCosto() { return costo; }
 
     public Estado getEstado() {
         return estado;
