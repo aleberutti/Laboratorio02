@@ -40,7 +40,7 @@ public class HistorialPedidos extends AppCompatActivity {
             lstdm.add(new DataModel(ped.getId(), ped.getEstado()));
         }
 
-        final PedidoAdapter lstAdapter = new PedidoAdapter(this, lstdm);
+        PedidoAdapter lstAdapter = new PedidoAdapter(this, lstdm);
         lvHistorialPedidos.setAdapter(lstAdapter);
 
 

@@ -48,6 +48,7 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
             fila_historial = inflater.inflate(R.layout.fila_historial, parent, false);
 
             holder = new PedidosViewHolder(fila_historial);
+<<<<<<< HEAD
 
             holder.btBorrar = convertView.findViewById(R.id.btBorrar);
             holder.btBorrar.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +77,9 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
             holder.btBorrar.setEnabled(true);
             holder.iv.setImageResource(R.drawable.ic_action_name);
 
+=======
+            System.out.println("Se setea el tag");
+>>>>>>> d269daf1dea4d5d62090035869aaf2df7ea3be26
             fila_historial.setTag(holder);
         }
         else{
@@ -117,10 +121,6 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
 //        holder.iv.setImageResource(R.drawable.ic_action_name);
 
 
-//
-//        TextView tvTitulo = fila_historial.findViewById(R.id.tvNro);
-//        TextView tvEstado = fila_historial.findViewById(R.id.tvEstado);
-
         switch (ped.getEstado()){
             case LISTO:
                 holder.tvEstado.setTextColor(Color.DKGRAY);
@@ -143,12 +143,6 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
                 break;
         }
 
-//        TextView tvRestantes = fila_historial.findViewById(R.id.tvRestantes);
-
-//        ImageView iv = fila_historial.findViewById(R.id.imgTipo);
-
-//        ImageButton btBorrar = fila_historial.findViewById(R.id.btBorrar);
-//        ImageButton btDetalle = fila_historial.findViewById(R.id.btDetalle);
 
         if ((pedido.getEstado() != "ACEPTADO") && (pedido.getEstado() != "REALIZADO") && (pedido.getEstado() != "EN PREPARACION")) {
             holder.btBorrar.setEnabled(false);
@@ -174,37 +168,47 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
             holder.tvRestantes.setText("Correo: " + ped.getMailContacto() + "\nPrecio: $" + ped.getCosto() + "\n" + "Cantidad de productos: " + cant);
         }
 
-//        holder.btDetalle.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent inte = new Intent(ctx, AltaPedido.class);
-//                inte.putExtra("Vista", pedido.getId());
-//                ctx.startActivity(inte);
-//            }
-//        });
-//
-//        holder.btBorrar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                repositorio.buscarPorId(pedido.getId()).setEstado(Pedido.Estado.CANCELADO);
-//                pedido.setEstado("CANCELADO");
-//                pa.notifyDataSetChanged();
-//            }
-//        });
 
-        holder.tvRestantes.setTag(position);
-        holder.tvEstado.setTag(position);
-        holder.btBorrar.setTag(position);
-        holder.btDetalle.setTag(position);
-        holder.iv.setTag(position);
-        holder.tvTitulo.setTag(position);
+        holder.btBorrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String titulo = ( (PedidosViewHolder)v.getTag() ).tvTitulo.getText().toString();
+                pedido.setEstado("CANCELADO");
+                repositorio.buscarPorId(pa.getID(titulo)).setEstado(Pedido.Estado.CANCELADO);
+                pa.notifyDataSetChanged();
+            }
+        });
+        holder.btDetalle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String titulo = ( (PedidosViewHolder)v.getTag() ).tvTitulo.getText().toString();
+                Intent inte = new Intent(ctx, AltaPedido.class);
+                inte.putExtra("Vista", pa.getID(titulo));
+                ctx.startActivity(inte);
+            }
+        });
+
+
+        holder.btBorrar.setTag(holder);
+        holder.btDetalle.setTag(holder);
 
         return fila_historial;
     }
 
+<<<<<<< HEAD
 
     private static class ViewHolder{
         private TextView
+=======
+    private int getID(String titulo){
+        do{
+            if (titulo.charAt(0) >57  || titulo.charAt(0)<48){
+                titulo = titulo.substring(1);
+            }
+        }while (titulo.charAt(0) >57  || titulo.charAt(0)<48);
+        System.out.println(Integer.parseInt(titulo));
+        return Integer.parseInt(titulo);
+>>>>>>> d269daf1dea4d5d62090035869aaf2df7ea3be26
     }
 
 }
