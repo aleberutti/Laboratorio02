@@ -45,15 +45,20 @@ public class AltaPedido extends AppCompatActivity {
     List<PedidoDetalle> listaProds = new ArrayList<>();
 
     private boolean retirar = false;
+    private double costo = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_pedido);
+
         tvCostoTotal = findViewById(R.id.tvTotal);
         tvTitulo = findViewById(R.id.tvTitulo);
 
-        tvTitulo.setText("Pedido " + unPedido.getId());
+        if (unPedido.getId() == null)
+            tvTitulo.setText("Pedido 0");
+        else
+            tvTitulo.setText("Pedido " + unPedido.getId());
 
         rbDomicilio = findViewById(R.id.rbEnvioADomicilio);
         rbLocal = findViewById(R.id.rbRetiroEnLocal);
@@ -61,8 +66,10 @@ public class AltaPedido extends AppCompatActivity {
         etHorario = findViewById(R.id.etHorarioEntrega);
         etDomicilio = findViewById(R.id.etDireccionEntrega);
 
-        etHorario.setEnabled(false);
-        etDomicilio.setEnabled(false);
+        if (rbLocal.isChecked()) {
+            etHorario.setEnabled(false);
+            etDomicilio.setEnabled(false);
+        }
 
         rbDomicilio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +96,7 @@ public class AltaPedido extends AppCompatActivity {
 
         lvProductos = (ListView) findViewById(R.id.lvListaProductos);
 
-        lstAdapter = new ArrayAdapter<PedidoDetalle>(this,android.R.layout.simple_list_item_single_choice, listaProds);
+        lstAdapter = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_single_choice, listaProds);
         lvProductos.setAdapter(lstAdapter);
 
         lvProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,8 +109,9 @@ public class AltaPedido extends AppCompatActivity {
                     public void onClick(View v) {
                         listaProds.remove(position);
                         lstAdapter.notifyDataSetChanged();
-                        double costo=hallarCosto();
-                        tvCostoTotal.setText("Total del pedido: $" + costo);
+                        costo = hallarCosto();
+                        tvCostoTotal.setText("Total del pedido: $" + Double.parseDouble(String.format("%.2f", costo)));
+                        unPedido.setCosto(Double.parseDouble(String.format("%.2f", costo)));
                     }
                 });
 
@@ -121,35 +129,45 @@ public class AltaPedido extends AppCompatActivity {
         });
 
 
-
         btConfirmar = findViewById(R.id.btConfirmar);
         etCorreo = findViewById(R.id.etCorreo);
 
+        btVolver = findViewById(R.id.btVolver);
+
+        btVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         //Inicializacion
         Intent in = getIntent();
-        int nvo = in.getIntExtra("Code",-2);
-        if (nvo!=-2){
+        int nvo = in.getIntExtra("Code", -2);
+        if (nvo != -2) {
             listaProds.addAll(repositorioPedido.buscarPorId(nvo).getDetalle());
             lstAdapter.notifyDataSetChanged();
-            double costo=hallarCosto();
+            costo = hallarCosto();
             tvCostoTotal.setText("Total del pedido: $" + costo);
             unPedido = repositorioPedido.buscarPorId(nvo);
             tvTitulo.setText("Pedido " + nvo);
 
             etCorreo.setText(unPedido.getMailContacto());
             retirar = unPedido.getRetirar();
-            if (retirar){
+            if (retirar) {
                 rbLocal.setChecked(true);
                 etHorario.setEnabled(false);
                 etHorario.setText(null);
                 etDomicilio.setEnabled(false);
                 etDomicilio.setText(null);
-            }else{
+            } else {
                 rbDomicilio.setChecked(true);
-                etHorario.setText(unPedido.getFecha().toString());
+                etHorario.setEnabled(true);
+                etDomicilio.setEnabled(true);
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                etHorario.setText(sdf.format(unPedido.getFecha()));
                 etDomicilio.setText(unPedido.getDireccionEnvio());
             }
-
 
 
             btConfirmar.setOnClickListener(new View.OnClickListener() {
@@ -157,16 +175,22 @@ public class AltaPedido extends AppCompatActivity {
                 public void onClick(View v) {
 
                     GregorianCalendar hora = new GregorianCalendar();
-                    String[] horaIngresada = etHorario.getText().toString().split(":");
-                    int valorHora = Integer.valueOf(horaIngresada[0]);
-                    int valorMinuto = Integer.valueOf(horaIngresada[1]);
-
+                    String[] horaIngresada = null;
+                    if (etHorario.getText().toString().isEmpty())
+                        horaIngresada = null;
+                    else
+                        horaIngresada = etHorario.getText().toString().split(":");
+                    int valorHora = 0, valorMinuto = 0;
+                    if (horaIngresada != null) {
+                        valorHora = Integer.valueOf(horaIngresada[0]);
+                        valorMinuto = Integer.valueOf(horaIngresada[1]);
+                    }
                     if (!validarCampos(horaIngresada))
-                        return ;
+                        return;
 
-                    hora.set(Calendar.HOUR_OF_DAY,valorHora);
-                    hora.set(Calendar.MINUTE,valorMinuto);
-                    hora.set(Calendar.SECOND,Integer.valueOf(0));
+                    hora.set(Calendar.HOUR_OF_DAY, valorHora);
+                    hora.set(Calendar.MINUTE, valorMinuto);
+                    hora.set(Calendar.SECOND, Integer.valueOf(0));
 
                     unPedido.setFecha(hora.getTime());
                     unPedido.setDetalle(listaProds);
@@ -179,37 +203,76 @@ public class AltaPedido extends AppCompatActivity {
                 }
             });
         }else {
-            btConfirmar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            nvo = in.getIntExtra("Vista", -2);
+            if (nvo != -2) {
+                etDomicilio.setEnabled(false);
+                etCorreo.setEnabled(false);
+                etHorario.setEnabled(false);
+                rbLocal.setEnabled(false);
+                rbDomicilio.setEnabled(false);
+                btAgregarProducto.setEnabled(false);
+                btQuitarProducto.setEnabled(false);
+                btConfirmar.setEnabled(false);
+                lvProductos.setEnabled(false);
 
-                    GregorianCalendar hora = new GregorianCalendar();
-                    String[] horaIngresada = etHorario.getText().toString().split(":");
-                    int valorHora = Integer.valueOf(horaIngresada[0]);
-                    int valorMinuto = Integer.valueOf(horaIngresada[1]);
+                listaProds.addAll(repositorioPedido.buscarPorId(nvo).getDetalle());
+                lstAdapter.notifyDataSetChanged();
+                costo = hallarCosto();
+                tvCostoTotal.setText("Total del pedido: $" + costo);
+                unPedido = repositorioPedido.buscarPorId(nvo);
+                tvTitulo.setText("Pedido " + nvo);
 
-                    if (!validarCampos(horaIngresada))
-                        return ;
-
-                    hora.set(Calendar.HOUR_OF_DAY,valorHora);
-                    hora.set(Calendar.MINUTE,valorMinuto);
-                    hora.set(Calendar.SECOND,Integer.valueOf(0));
-
-                    unPedido.setFecha(hora.getTime());
-                    unPedido.setDetalle(listaProds);
-                    unPedido.setEstado(Pedido.Estado.REALIZADO);
-                    unPedido.setDireccionEnvio(etDomicilio.getText().toString());
-                    unPedido.setMailContacto(etCorreo.getText().toString());
-                    unPedido.setRetirar(retirar);
-                    repositorioPedido.guardarPedido(unPedido);
-
-                    Intent historial = new Intent(AltaPedido.this, HistorialPedidos.class);
-                    startActivity(historial);
-
+                etCorreo.setText(unPedido.getMailContacto());
+                retirar = unPedido.getRetirar();
+                if (!retirar) {
+                    rbDomicilio.setChecked(true);
+                    etHorario.setText(unPedido.getFecha().toString());
+                    etDomicilio.setText(unPedido.getDireccionEnvio());
+                }else{
+                    rbLocal.setChecked(true);
                 }
-            });
-        }
+            }else {
+                btConfirmar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+                        GregorianCalendar hora = new GregorianCalendar();
+                        String[] horaIngresada = null;
+                        if (etHorario.getText().toString().isEmpty())
+                            horaIngresada = null;
+                        else
+                            horaIngresada = etHorario.getText().toString().split(":");
+                        int valorHora = 0, valorMinuto = 0;
+                        try {
+                            if (horaIngresada != null) {
+                                valorHora = Integer.valueOf(horaIngresada[0]);
+                                valorMinuto = Integer.valueOf(horaIngresada[1]);
+                            }
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(AltaPedido.this, "Debe ingresar un horario correcto.\nEjemplo (22:59)", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (!validarCampos(horaIngresada))
+                            return;
+                        hora.set(Calendar.HOUR_OF_DAY, valorHora);
+                        hora.set(Calendar.MINUTE, valorMinuto);
+                        hora.set(Calendar.SECOND, Integer.valueOf(0));
+
+                        unPedido.setFecha(hora.getTime());
+                        unPedido.setDetalle(listaProds);
+                        unPedido.setEstado(Pedido.Estado.REALIZADO);
+                        unPedido.setDireccionEnvio(etDomicilio.getText().toString());
+                        unPedido.setMailContacto(etCorreo.getText().toString());
+                        unPedido.setRetirar(retirar);
+                        repositorioPedido.guardarPedido(unPedido);
+
+                        Intent historial = new Intent(AltaPedido.this, HistorialPedidos.class);
+                        startActivity(historial);
+
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -220,10 +283,12 @@ public class AltaPedido extends AppCompatActivity {
 
             listaProds.add(detalle);
 
-            double costo = hallarCosto();
-            tvCostoTotal.setText("Total del pedido: $" + costo);
+            costo = hallarCosto();
+            tvCostoTotal.setText("Total del pedido: $" + Double.parseDouble(String.format("%.2f", costo)));
+            unPedido.setCosto(Double.parseDouble(String.format("%.2f", costo)));
 
             lstAdapter.notifyDataSetChanged();
+
         }else{
             System.out.println("error");
             System.exit(0);
@@ -232,10 +297,11 @@ public class AltaPedido extends AppCompatActivity {
 
 
     private double hallarCosto(){
-        double costo = 0.0;
+        costo = 0.0;
         for (int j = 0; j<listaProds.size(); j++){
             costo = (listaProds.get(j).getProducto().getPrecio()*listaProds.get(j).getCantidad()) + costo;
         }
+        unPedido.setCosto(Double.parseDouble(String.format("%.2f", costo)));
         return costo;
     }
 
@@ -244,23 +310,28 @@ public class AltaPedido extends AppCompatActivity {
             Toast.makeText(AltaPedido.this,"Debe ingresar un mail", Toast.LENGTH_LONG).show();
             return false;
         }else {
-            if (etDomicilio.toString().isEmpty()  && !retirar){
+            if (etDomicilio.getText().toString().isEmpty() && !retirar){
                 Toast.makeText(AltaPedido.this,"Debe ingresar un domicilio", Toast.LENGTH_LONG).show();
                 return false;
             }else{
                 if (!retirar) {
                     //Validar fecha
-                    int valorHora = Integer.valueOf(horaIngresada[0]);
-                    int valorMinuto = Integer.valueOf(horaIngresada[1]);
-                    if (valorHora < 0 || valorHora > 23) {
-                        Toast.makeText(AltaPedido.this, "La hora ingresada (" + valorHora + " es incorrecta", Toast.LENGTH_LONG).show();
+                    try {
+                        int valorHora = Integer.valueOf(horaIngresada[0]);
+                        int valorMinuto = Integer.valueOf(horaIngresada[1]);
+                        if (valorHora < 0 || valorHora > 23) {
+                            Toast.makeText(AltaPedido.this, "La hora ingresada (" + valorHora + ") es incorrecta", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+                        if (valorMinuto < 0 || valorMinuto > 59) {
+                            Toast.makeText(AltaPedido.this, "Los minutos (" + valorMinuto + ") son incorrectos", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+                        return true;
+                    }catch (NullPointerException e){
+                        Toast.makeText(AltaPedido.this, "Debe ingresar un horario", Toast.LENGTH_LONG).show();
                         return false;
                     }
-                    if (valorMinuto < 0 || valorMinuto > 59) {
-                        Toast.makeText(AltaPedido.this, "Los minutos (" + valorMinuto + " son incorrectos", Toast.LENGTH_LONG).show();
-                        return false;
-                    }
-                    return true;
                 }else
                     return true;
             }
