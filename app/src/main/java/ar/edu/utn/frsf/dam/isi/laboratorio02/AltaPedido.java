@@ -112,6 +112,9 @@ public class AltaPedido extends AppCompatActivity {
                         costo = hallarCosto();
                         tvCostoTotal.setText("Total del pedido: $" + Double.parseDouble(String.format("%.2f", costo)));
                         unPedido.setCosto(Double.parseDouble(String.format("%.2f", costo)));
+                        if (lstAdapter.getCount()<1){
+                            btQuitarProducto.setEnabled(false);
+                        }
                     }
                 });
 
