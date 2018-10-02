@@ -113,7 +113,6 @@ public class AltaPedido extends AppCompatActivity {
         });
 
 
-
         btConfirmar = findViewById(R.id.btConfirmar);
         btConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
