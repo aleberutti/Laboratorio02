@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -84,6 +85,15 @@ public class ListaProductos extends AppCompatActivity {
         pedir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (cant.getText().toString().isEmpty()){
+                    Toast.makeText(ListaProductos.this,"Debe ingresar una cantidad", Toast.LENGTH_LONG).show();
+                    return ;
+                }else{
+                    if (selected==null){
+                        Toast.makeText(ListaProductos.this,"Debe ingresar un producto", Toast.LENGTH_LONG).show();
+                        return ;
+                    }
+                }
                 Intent i2 = new Intent();
                 i2.putExtra("cantidad", Integer.parseInt(cant.getText().toString()));
                 i2.putExtra("id", selected.getId());
