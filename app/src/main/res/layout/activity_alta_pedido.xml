@@ -99,7 +99,6 @@
             <ListView
                 android:id="@+id/lvListaProductos"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
                 android:choiceMode="singleChoice"
                 android:layout_weight="1">
             </ListView>

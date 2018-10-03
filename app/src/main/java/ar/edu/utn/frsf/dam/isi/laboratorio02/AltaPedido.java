@@ -115,6 +115,8 @@ public class AltaPedido extends AppCompatActivity {
 
 
         btConfirmar = findViewById(R.id.btConfirmar);
+        etCorreo = (EditText) findViewById(R.id.etCorreo);
+
         btConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
