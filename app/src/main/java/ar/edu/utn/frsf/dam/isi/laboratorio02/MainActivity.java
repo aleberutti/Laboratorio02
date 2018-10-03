@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btnHistorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent();
+                Intent i = new Intent(MainActivity.this, HistorialPedidos.class);
                 startActivity(i);
             }
         });

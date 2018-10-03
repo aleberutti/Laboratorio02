@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HistorialPedidos"
+    android:orientation="vertical"
+    android:weightSum="3">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvPedidosRealizados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pedidos realizados"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/lvHistorialPedidos"
+            android:layout_width="match_parent"
+            android:layout_height="492dp"
+            android:layout_weight="1"
+            >
+
+        </ListView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btHistorialNuevo"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Nuevo" />
+
+            <Button
+                android:id="@+id/btHistorialMenu"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Menú" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
