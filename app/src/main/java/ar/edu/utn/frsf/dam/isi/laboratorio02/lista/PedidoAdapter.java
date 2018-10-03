@@ -40,7 +40,10 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
         LayoutInflater inflater = LayoutInflater.from(this.ctx);
         View fila_historial = convertView;
 
+        System.out.println("Posicion: " + position);
+
         PedidosViewHolder holder;
+        pedido = super.getItem(position);
         Pedido ped = repositorio.buscarPorId(pedido.getId());
 
         if (fila_historial == null){
@@ -49,36 +52,11 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
 
             holder = new PedidosViewHolder(fila_historial);
 
-            holder.btBorrar = convertView.findViewById(R.id.btBorrar);
-            holder.btBorrar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Integer pos = (Integer) v.getTag();
-                    getItem(pos).setEstado("CANCELADO");
-                    repositorio.buscarPorId(getItem(pos).getId()).setEstado(Pedido.Estado.CANCELADO);
-                }
-            });
-
-            holder.btDetalle = convertView.findViewById(R.id.btDetalle);
-            holder.btDetalle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Integer pos = (Integer) v.getTag();
-                    Intent inte = new Intent(ctx, AltaPedido.class);
-                    inte.putExtra("Vista", getItem(pos).getId());
-                    ctx.startActivity(inte);
-                }
-            });
-
-            pedido = super.getItem(position);
-
-            holder.btBorrar.setImageResource(R.drawable.ic_action_delete);
-            holder.btBorrar.setEnabled(true);
-            holder.iv.setImageResource(R.drawable.ic_action_name);
             fila_historial.setTag(holder);
+
         }
         else{
-            holder = (PedidosViewHolder) convertView.getTag();
+            holder = (PedidosViewHolder) fila_historial.getTag();
         }
 
         switch (ped.getEstado()){
@@ -103,6 +81,9 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
                 break;
         }
 
+        holder.btBorrar.setImageResource(R.drawable.ic_action_delete);
+        holder.btBorrar.setEnabled(true);
+        holder.iv.setImageResource(R.drawable.ic_action_name);
 
         if ((pedido.getEstado() != "ACEPTADO") && (pedido.getEstado() != "REALIZADO") && (pedido.getEstado() != "EN PREPARACION")) {
             holder.btBorrar.setEnabled(false);
@@ -132,7 +113,9 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
         holder.btBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String titulo = ( (PedidosViewHolder)v.getTag() ).tvTitulo.getText().toString();
+                PedidosViewHolder hold = (PedidosViewHolder) ( (View)v.getParent() ).getTag();
+                String titulo = hold.tvTitulo.getText().toString();
+                pedido = PedidoAdapter.super.getItem(pa.getID(titulo));
                 pedido.setEstado("CANCELADO");
                 repositorio.buscarPorId(pa.getID(titulo)).setEstado(Pedido.Estado.CANCELADO);
                 pa.notifyDataSetChanged();
@@ -141,16 +124,14 @@ public class PedidoAdapter extends ArrayAdapter<DataModel> {
         holder.btDetalle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String titulo = ( (PedidosViewHolder)v.getTag() ).tvTitulo.getText().toString();
+                PedidosViewHolder hold = (PedidosViewHolder) ( (View)v.getParent() ).getTag();
+                String titulo = hold.tvTitulo.getText().toString();
+                pedido = PedidoAdapter.super.getItem(pa.getID(titulo));
                 Intent inte = new Intent(ctx, AltaPedido.class);
                 inte.putExtra("Vista", pa.getID(titulo));
                 ctx.startActivity(inte);
             }
         });
-
-
-        holder.btBorrar.setTag(holder);
-        holder.btDetalle.setTag(holder);
 
         return fila_historial;
     }

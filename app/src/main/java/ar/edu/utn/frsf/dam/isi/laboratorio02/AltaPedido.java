@@ -178,7 +178,7 @@ public class AltaPedido extends AppCompatActivity {
                 public void onClick(View v) {
 
                     GregorianCalendar hora = new GregorianCalendar();
-                    String[] horaIngresada = null;
+                    String[] horaIngresada;
                     if (etHorario.getText().toString().isEmpty())
                         horaIngresada = null;
                     else
@@ -191,14 +191,22 @@ public class AltaPedido extends AppCompatActivity {
                     if (!validarCampos(horaIngresada))
                         return;
 
-                    hora.set(Calendar.HOUR_OF_DAY, valorHora);
-                    hora.set(Calendar.MINUTE, valorMinuto);
-                    hora.set(Calendar.SECOND, Integer.valueOf(0));
+                    if (rbDomicilio.isChecked()) {
+                        hora.set(Calendar.HOUR_OF_DAY, valorHora);
+                        hora.set(Calendar.MINUTE, valorMinuto);
+                        hora.set(Calendar.SECOND, Integer.valueOf(0));
 
-                    unPedido.setFecha(hora.getTime());
+                        unPedido.setFecha(hora.getTime());
+                        unPedido.setDireccionEnvio(etDomicilio.getText().toString());
+                        unPedido.setRetirar(false);
+                    }else{
+                        unPedido.setRetirar(true);
+                        unPedido.setFecha(null);
+                        unPedido.setDireccionEnvio(null);
+                    }
+
                     unPedido.setDetalle(listaProds);
                     unPedido.setEstado(Pedido.Estado.REALIZADO);
-
 
                     Intent historial = new Intent(AltaPedido.this, HistorialPedidos.class);
                     startActivity(historial);
@@ -313,30 +321,41 @@ public class AltaPedido extends AppCompatActivity {
             Toast.makeText(AltaPedido.this,"Debe ingresar un mail", Toast.LENGTH_LONG).show();
             return false;
         }else {
-            if (etDomicilio.getText().toString().isEmpty() && !retirar){
-                Toast.makeText(AltaPedido.this,"Debe ingresar un domicilio", Toast.LENGTH_LONG).show();
+            if (!rbDomicilio.isChecked() && !rbLocal.isChecked()){
+                Toast.makeText(AltaPedido.this,"Debe seleccionar entrega o retiro", Toast.LENGTH_LONG).show();
                 return false;
-            }else{
-                if (!retirar) {
-                    //Validar fecha
-                    try {
-                        int valorHora = Integer.valueOf(horaIngresada[0]);
-                        int valorMinuto = Integer.valueOf(horaIngresada[1]);
-                        if (valorHora < 0 || valorHora > 23) {
-                            Toast.makeText(AltaPedido.this, "La hora ingresada (" + valorHora + ") es incorrecta", Toast.LENGTH_LONG).show();
+            }else {
+                if (etDomicilio.getText().toString().isEmpty() && !retirar) {
+                    Toast.makeText(AltaPedido.this, "Debe ingresar un domicilio", Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    if (!retirar) {
+                        //Validar fecha
+                        try {
+                            int valorHora = Integer.valueOf(horaIngresada[0]);
+                            int valorMinuto = Integer.valueOf(horaIngresada[1]);
+                            if (valorHora < 0 || valorHora > 23) {
+                                Toast.makeText(AltaPedido.this, "La hora ingresada (" + valorHora + ") es incorrecta", Toast.LENGTH_LONG).show();
+                                return false;
+                            }
+                            if (valorMinuto < 0 || valorMinuto > 59) {
+                                Toast.makeText(AltaPedido.this, "Los minutos (" + valorMinuto + ") son incorrectos", Toast.LENGTH_LONG).show();
+                                return false;
+                            }
+                            return true;
+                        } catch (NullPointerException e) {
+                            Toast.makeText(AltaPedido.this, "Debe ingresar un horario", Toast.LENGTH_LONG).show();
                             return false;
                         }
-                        if (valorMinuto < 0 || valorMinuto > 59) {
-                            Toast.makeText(AltaPedido.this, "Los minutos (" + valorMinuto + ") son incorrectos", Toast.LENGTH_LONG).show();
+                    } else{
+                        if (lstAdapter.getCount()<1){
+                            Toast.makeText(AltaPedido.this, "Debe existir al menos un producto por pedido", Toast.LENGTH_LONG).show();
                             return false;
+                        }else{
+                            return true;
                         }
-                        return true;
-                    }catch (NullPointerException e){
-                        Toast.makeText(AltaPedido.this, "Debe ingresar un horario", Toast.LENGTH_LONG).show();
-                        return false;
                     }
-                }else
-                    return true;
+                }
             }
         }
     }
