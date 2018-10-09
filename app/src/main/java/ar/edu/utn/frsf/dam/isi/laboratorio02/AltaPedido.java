@@ -2,6 +2,7 @@ package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -293,10 +294,12 @@ public class AltaPedido extends AppCompatActivity {
             PedidoDetalle detalle = new PedidoDetalle(data.getExtras().getInt("cantidad"), repositorioProducto.buscarPorId(data.getExtras().getInt("id")));
 
             listaProds.add(detalle);
-
+            Resources res = getResources();
             costo = hallarCosto();
-            tvCostoTotal.setText("Total del pedido: $" + Double.parseDouble(String.format("%.2f", costo)));
-            unPedido.setCosto(Double.parseDouble(String.format("%.2f", costo)));
+            String text = res.getString(R.string.costo, costo);
+
+            tvCostoTotal.setText(text);
+            unPedido.setCosto(costo);
 
             lstAdapter.notifyDataSetChanged();
 
@@ -312,8 +315,8 @@ public class AltaPedido extends AppCompatActivity {
         for (int j = 0; j<listaProds.size(); j++){
             costo = (listaProds.get(j).getProducto().getPrecio()*listaProds.get(j).getCantidad()) + costo;
         }
-        unPedido.setCosto(Double.parseDouble(String.format("%.2f", costo)));
-        return costo;
+        unPedido.setCosto(Double.valueOf(costo));
+        return Double.valueOf(costo);
     }
 
     private boolean validarCampos (String[] horaIngresada){
