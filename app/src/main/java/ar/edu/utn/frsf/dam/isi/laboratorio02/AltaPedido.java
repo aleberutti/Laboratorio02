@@ -1,6 +1,7 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
@@ -146,8 +147,10 @@ public class AltaPedido extends AppCompatActivity {
         });
 
         //Inicializacion
+
         Intent in = getIntent();
         int nvo = in.getIntExtra("Code", -2);
+
         if (nvo != -2) {
             listaProds.addAll(repositorioPedido.buscarPorId(nvo).getDetalle());
             lstAdapter.notifyDataSetChanged();
