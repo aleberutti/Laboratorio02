@@ -296,6 +296,10 @@ public class AltaPedido extends AppCompatActivity {
 
                                      if(p.getEstado().equals(Pedido.Estado.REALIZADO)){
                                          p.setEstado(Pedido.Estado.ACEPTADO);
+
+                                         Intent broadcast = new Intent(AltaPedido.this, EstadoPedidoReceiver.class);
+                                         broadcast.putExtra("idPedido", p.getId());
+                                         startActivity(broadcast);
                                      }
                                  }
                                  runOnUiThread(new Runnable() {
