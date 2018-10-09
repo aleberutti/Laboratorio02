@@ -299,7 +299,8 @@ public class AltaPedido extends AppCompatActivity {
 
                                          Intent broadcast = new Intent(AltaPedido.this, EstadoPedidoReceiver.class);
                                          broadcast.putExtra("idPedido", p.getId());
-                                         startActivity(broadcast);
+                                         sendBroadcast(broadcast);
+
                                      }
                                  }
                                  runOnUiThread(new Runnable() {

@@ -15,11 +15,11 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String id = intent.getStringExtra("idPedido");
+        int id = intent.getIntExtra("idPedido", 1);
 
-        Pedido pedido = repositorioPedido.buscarPorId(Integer.parseInt(id));
+        Pedido pedido = repositorioPedido.buscarPorId(id);
 
-        Toast.makeText(context,"Pedido para " + pedido.getMailContacto() + "ha cambiado al estado ACEPTADO", Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"Pedido para " + pedido.getMailContacto() + " ha cambiado al estado ACEPTADO", Toast.LENGTH_LONG).show();
 
 //      throw new UnsupportedOperationException("Not yet implemented");
     }
