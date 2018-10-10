@@ -114,7 +114,7 @@ public class AltaPedido extends AppCompatActivity {
                         costo = hallarCosto();
                         tvCostoTotal.setText("Total del pedido: $" + Double.parseDouble(String.format("%.2f", costo)));
                         unPedido.setCosto(Double.parseDouble(String.format("%.2f", costo)));
-                        if (lstAdapter.getCount()<1){
+                        if (lstAdapter.getCount() < 1) {
                             btQuitarProducto.setEnabled(false);
                         }
                     }
@@ -203,7 +203,7 @@ public class AltaPedido extends AppCompatActivity {
                         unPedido.setFecha(hora.getTime());
                         unPedido.setDireccionEnvio(etDomicilio.getText().toString());
                         unPedido.setRetirar(false);
-                    }else{
+                    } else {
                         unPedido.setRetirar(true);
                         unPedido.setFecha(null);
                         unPedido.setDireccionEnvio(null);
@@ -217,7 +217,7 @@ public class AltaPedido extends AppCompatActivity {
 
                 }
             });
-        }else {
+        } else {
             nvo = in.getIntExtra("Vista", -2);
             if (nvo != -2) {
                 etDomicilio.setEnabled(false);
@@ -243,10 +243,10 @@ public class AltaPedido extends AppCompatActivity {
                     rbDomicilio.setChecked(true);
                     etHorario.setText(unPedido.getFecha().toString());
                     etDomicilio.setText(unPedido.getDireccionEnvio());
-                }else{
+                } else {
                     rbLocal.setChecked(true);
                 }
-            }else {
+            } else {
                 btConfirmar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -282,36 +282,37 @@ public class AltaPedido extends AppCompatActivity {
                         repositorioPedido.guardarPedido(unPedido);
 
                         Runnable r = new Runnable() {
-                         @Override
+                            @Override
                             public void run() {
-                                 try{
-                                     Thread.currentThread().sleep( 10000);
-                                     }
-                                 catch(InterruptedException e) {
-                                     e.printStackTrace();
-                                     }
+                                try {
+                                    Thread.currentThread().sleep(2000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
 
-                             // buscar pedidos no aceptados y aceptarlos automáticamente
+                                // buscar pedidos no aceptados y aceptarlos automáticamente
 
                                 List<Pedido> lista = repositorioPedido.getLista();
 
-                                 for(Pedido p:lista){
+                                for (Pedido p : lista) {
 
-                                     if(p.getEstado().equals(Pedido.Estado.REALIZADO)){
-                                         p.setEstado(Pedido.Estado.ACEPTADO);
+                                    if (p.getEstado().equals(Pedido.Estado.REALIZADO)) {
+                                        p.setEstado(Pedido.Estado.ACEPTADO);
 
-                                         Intent broadcast = new Intent(AltaPedido.this, EstadoPedidoReceiver.class);
-                                         broadcast.putExtra("idPedido", p.getId());
-                                         sendBroadcast(broadcast);
+                                        Intent broadcast = new Intent(AltaPedido.this, EstadoPedidoReceiver.class);
+                                        broadcast.putExtra("idPedido", p.getId());
+                                        sendBroadcast(broadcast);
 
-                                     }
-                                 }
-                                 runOnUiThread(new Runnable() {
-                                     @Override
-                                     public void run() {
-                                         Toast.makeText(AltaPedido.this,"Información de pedidos actualizada!", Toast.LENGTH_LONG).show();
-                                         }});
-                                 }};
+                                    }
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(AltaPedido.this, "Información de pedidos actualizada!", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        };
 
                         Thread unHilo = new Thread(r);
                         unHilo.start();
@@ -323,6 +324,7 @@ public class AltaPedido extends AppCompatActivity {
                 });
             }
         }
+
     }
 
     @Override

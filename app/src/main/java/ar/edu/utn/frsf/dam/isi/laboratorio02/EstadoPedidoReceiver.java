@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ReceiverCallNotAllowedException;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -25,13 +26,13 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        int id = intent.getIntExtra("idPedido", 1);
+        int id = intent.getIntExtra("idPedido", 0);
 
         Pedido pedido = repositorioPedido.buscarPorId(id);
 
         Intent destino = new Intent(context, AltaPedido.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        destino.putExtra("Code", 5);
+        destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        destino.putExtra("Code", pedido.getId());
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, destino, 0);
 
