@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,9 +17,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ListaProductos" />
+
         <activity android:name=".AltaPedido" />
-        <activity android:name=".HistorialPedidos"></activity>
+
+        <activity android:name=".HistorialPedidos" />
+
+        <receiver
+            android:name=".EstadoPedidoReceiver"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name=".ESTADO_ACEPTADO"/>
+                <action android:name=".ESTADO_CANCELADO"/>
+                <action android:name=".ESTADO_EN_PREPARACION"/>
+                <action android:name=".ESTADO_LISTO"/>
+            </intent-filter>
+
+        </receiver>
+
     </application>
 
 </manifest>
