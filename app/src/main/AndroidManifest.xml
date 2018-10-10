@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,27 +16,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ListaProductos" />
-
         <activity android:name=".AltaPedido" />
-
         <activity android:name=".HistorialPedidos" />
 
         <receiver
             android:name=".EstadoPedidoReceiver"
             android:enabled="true"
             android:exported="true">
-
             <intent-filter>
-                <action android:name=".ESTADO_ACEPTADO"/>
-                <action android:name=".ESTADO_CANCELADO"/>
-                <action android:name=".ESTADO_EN_PREPARACION"/>
-                <action android:name=".ESTADO_LISTO"/>
+                <action android:name="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_ACEPTADO" />
+                <action android:name="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_CANCELADO" />
+                <action android:name="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_EN_PREPARACION" />
+                <action android:name="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_LISTO" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </receiver>
 
+        <service
+            android:name=".PrepararPedidoService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
