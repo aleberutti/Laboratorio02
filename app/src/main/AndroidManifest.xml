@@ -24,6 +24,7 @@
             android:name=".EstadoPedidoReceiver"
             android:enabled="true"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_ACEPTADO" />
                 <action android:name="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_CANCELADO" />
@@ -32,6 +33,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".RestoMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".RestoFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id"/>
 
         <service
             android:name=".PrepararPedidoService"
