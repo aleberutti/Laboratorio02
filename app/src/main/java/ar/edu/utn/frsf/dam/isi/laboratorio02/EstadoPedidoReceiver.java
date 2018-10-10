@@ -32,7 +32,7 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
 
         Intent destino = new Intent(context, AltaPedido.class);
         destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        destino.putExtra("Code", pedido.getId());
+        destino.putExtra("Vista", pedido.getId());
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, destino, 0);
 
