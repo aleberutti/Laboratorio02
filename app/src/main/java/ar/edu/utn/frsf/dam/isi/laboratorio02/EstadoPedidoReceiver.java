@@ -47,6 +47,7 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
 
+
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             notificationManager.notify(99, mBuilder.build());
         }else {
@@ -71,6 +72,45 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             notificationManager.notify(99, mBuilder.build());
         }
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        switch (intent.getAction()){
+            case "ESTADO_ACEPTADO":
+
+                NotificationCompat.Builder mBuilder = new
+                        NotificationCompat.Builder(context,
+                        EstadoPedidoReceiver.CANAL_MENSAJES_ID)
+                        .setSmallIcon(R.drawable.ic_action_name_1)
+                        .setContentTitle("El pedido fue aceptado")
+                        .setContentText("Costo total: " + pedido.getCosto())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+                notificationManager.notify(99, mBuilder.build());
+
+                break;
+
+            case "ESTADO_EN_PREPARACION":
+
+                NotificationCompat.Builder mBuilder2 = new
+                        NotificationCompat.Builder(context,
+                        EstadoPedidoReceiver.CANAL_MENSAJES_ID)
+                        .setSmallIcon(R.drawable.ic_action_name_1)
+                        .setContentTitle("El pedido esta en preparación")
+                        .setContentText("Costo total: " + pedido.getCosto())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+                notificationManager.notify(99, mBuilder2.build());
+
+                break;
+
+            default:
+        }
+
     }
 
 //      throw new UnsupportedOperationException("Not yet implemented");
