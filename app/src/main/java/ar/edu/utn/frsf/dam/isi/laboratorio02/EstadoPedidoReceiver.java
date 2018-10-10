@@ -57,8 +57,6 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
 
             case "ESTADO_EN_PREPARACION":
 
-                System.out.println("EN PREPA");
-
                 NotificationCompat.Builder mBuilder2 = new
                         NotificationCompat.Builder(context,
                         EstadoPedidoReceiver.CANAL_MENSAJES_ID)
