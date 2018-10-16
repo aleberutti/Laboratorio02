@@ -297,10 +297,12 @@ public class AltaPedido extends AppCompatActivity {
                                 for (Pedido p : lista) {
 
                                     if (p.getEstado().equals(Pedido.Estado.REALIZADO)) {
+
                                         p.setEstado(Pedido.Estado.ACEPTADO);
 
                                         Intent broadcast = new Intent(AltaPedido.this, EstadoPedidoReceiver.class);
                                         broadcast.putExtra("idPedido", p.getId());
+                                        broadcast.setAction("ESTADO_ACEPTADO");
                                         sendBroadcast(broadcast);
 
                                     }
