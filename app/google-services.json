@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "9008307604",
-    "firebase_url": "https://laboratorio02-7ffe6.firebaseio.com",
-    "project_id": "laboratorio02-7ffe6",
-    "storage_bucket": "laboratorio02-7ffe6.appspot.com"
+    "project_number": "626963701338",
+    "firebase_url": "https://laboratorio03-dam.firebaseio.com",
+    "project_id": "laboratorio03-dam",
+    "storage_bucket": "laboratorio03-dam.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:9008307604:android:38bf568b58a9777a",
+        "mobilesdk_app_id": "1:626963701338:android:38bf568b58a9777a",
         "android_client_info": {
           "package_name": "ar.edu.utn.frsf.dam.isi.laboratorio02"
         }
       },
       "oauth_client": [
         {
-          "client_id": "9008307604-dnc1c7rab4dhrj77tclk8m6ginq2278o.apps.googleusercontent.com",
+          "client_id": "626963701338-231qvc02jmlul7kaj9larjafkjo0s3i7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBfF9fau89o3oeQsxZNVdM-NLPaiaKe00w"
+          "current_key": "AIzaSyC6s_MG1bZFFpcECGJ0gqPVJ8IWTonAWYE"
         }
       ],
       "services": {

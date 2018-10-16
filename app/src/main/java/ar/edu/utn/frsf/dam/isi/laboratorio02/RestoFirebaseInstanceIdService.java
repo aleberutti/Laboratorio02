@@ -5,13 +5,31 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class RestoFirebaseInstanceIdService extends FirebaseInstanceIdService {
+
+    private static final String TAG ="laboratorio03-dam";
+
     public RestoFirebaseInstanceIdService() {
     }
 
+    @Override
+    public void onCreate(){
+        super.onCreate();
+        Log.d(TAG, "Refreshed token: SERVICIO CREADO");
+    }
+    @Override
+    public void onTokenRefresh() {
+
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
+
+        guardarToken(refreshedToken);
+    }
 
 
     private void guardarToken(String _token){

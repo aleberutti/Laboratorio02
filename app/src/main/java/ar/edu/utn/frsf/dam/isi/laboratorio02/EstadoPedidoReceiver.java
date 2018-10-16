@@ -29,27 +29,29 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
         int id = intent.getIntExtra("idPedido", -1);
         int idAux = intent.getIntExtra("ID_PEDIDO", -1);
         if (idAux!=-1){
-            Pedido pedido = repositorioPedido.buscarPorId(idAux);
+            if (intent.getAction().equals("ESTADO_LISTO")) {
+                Pedido pedido = repositorioPedido.buscarPorId(idAux);
 
-            Intent destino = new Intent(context, AltaPedido.class);
-            destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            destino.putExtra("Vista", pedido.getId());
+                Intent destino = new Intent(context, AltaPedido.class);
+                destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                destino.putExtra("Vista", pedido.getId());
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, destino, 0);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, destino, 0);
 
-            NotificationCompat.Builder mBuilder = new
-                    NotificationCompat.Builder(context,
-                    EstadoPedidoReceiver.CANAL_MENSAJES_ID)
-                    .setSmallIcon(R.drawable.ic_action_name_1)
-                    .setContentTitle("El pedido " + idAux + " está listo")
-                    .setContentText("Pulsa aquí para visualizarlo")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true);
+                NotificationCompat.Builder mBuilder = new
+                        NotificationCompat.Builder(context,
+                        EstadoPedidoReceiver.CANAL_MENSAJES_ID)
+                        .setSmallIcon(R.drawable.ic_action_name_1)
+                        .setContentTitle("El pedido " + idAux + " está listo")
+                        .setContentText("Pulsa aquí para visualizarlo")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
 
 
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(99, mBuilder.build());
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.notify(99, mBuilder.build());
+            }
         }else {
             Pedido pedido = repositorioPedido.buscarPorId(id);
 
@@ -59,57 +61,45 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, destino, 0);
 
-            NotificationCompat.Builder mBuilder = new
-                    NotificationCompat.Builder(context,
-                    EstadoPedidoReceiver.CANAL_MENSAJES_ID)
-                    .setSmallIcon(R.drawable.ic_action_name_1)
-                    .setContentTitle("El pedido fue aceptado")
-                    .setContentText("Costo total: " + pedido.getCosto())
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true);
-
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(99, mBuilder.build());
+            switch (intent.getAction()){
+                case "ESTADO_ACEPTADO":
+
+                    NotificationCompat.Builder mBuilder = new
+                            NotificationCompat.Builder(context,
+                            EstadoPedidoReceiver.CANAL_MENSAJES_ID)
+                            .setSmallIcon(R.drawable.ic_action_name_1)
+                            .setContentTitle("El pedido "+ id +" fue aceptado")
+                            .setContentText("Costo total: " + pedido.getCosto())
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true);
+
+                    notificationManager.notify(99, mBuilder.build());
+
+                    break;
+
+                case "ESTADO_EN_PREPARACION":
+
+                    NotificationCompat.Builder mBuilder2 = new
+                            NotificationCompat.Builder(context,
+                            EstadoPedidoReceiver.CANAL_MENSAJES_ID)
+                            .setSmallIcon(R.drawable.ic_action_name_1)
+                            .setContentTitle("El pedido "+ id +" esta en preparación")
+                            .setContentText("Costo total: " + pedido.getCosto())
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true);
+
+                    notificationManager.notify(99, mBuilder2.build());
+
+                    break;
+
+                default:
+            }
         }
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-        switch (intent.getAction()){
-            case "ESTADO_ACEPTADO":
-
-                NotificationCompat.Builder mBuilder = new
-                        NotificationCompat.Builder(context,
-                        EstadoPedidoReceiver.CANAL_MENSAJES_ID)
-                        .setSmallIcon(R.drawable.ic_action_name_1)
-                        .setContentTitle("El pedido fue aceptado")
-                        .setContentText("Costo total: " + pedido.getCosto())
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
-
-                notificationManager.notify(99, mBuilder.build());
-
-                break;
-
-            case "ESTADO_EN_PREPARACION":
-
-                NotificationCompat.Builder mBuilder2 = new
-                        NotificationCompat.Builder(context,
-                        EstadoPedidoReceiver.CANAL_MENSAJES_ID)
-                        .setSmallIcon(R.drawable.ic_action_name_1)
-                        .setContentTitle("El pedido esta en preparación")
-                        .setContentText("Costo total: " + pedido.getCosto())
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
-
-                notificationManager.notify(99, mBuilder2.build());
-
-                break;
-
-            default:
-        }
 
     }
 

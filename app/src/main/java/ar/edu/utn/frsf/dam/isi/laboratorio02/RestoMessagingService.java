@@ -23,6 +23,7 @@ public class RestoMessagingService extends FirebaseMessagingService {
         ped.setEstado(Pedido.Estado.LISTO);
         Intent i2 = new Intent (RestoMessagingService.this, EstadoPedidoReceiver.class);
         i2.putExtra("ID_PEDIDO", id);
+        i2.setAction("ESTADO_LISTO");
         sendBroadcast(i2);
     }
 
