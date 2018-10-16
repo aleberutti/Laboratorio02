@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ListaProductos">
+
+
+             <TextView
+            android:id="@+id/tvSeleccionarCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selCat" />
+
+
+             <Spinner
+                android:id="@+id/cmbProductosCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+             <TextView
+                 android:id="@+id/tvListaProductos"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="@string/lstProd" />
+
+             <ListView
+                 android:id="@+id/lstProductos"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:choiceMode="singleChoice"
+                 android:layout_weight="1">
+
+             </ListView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cantPedir" />
+
+        <EditText
+                android:id="@+id/edtProdCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number" />
+
+        <Button
+                android:id="@+id/btnProdAddPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btnAdd" />
+    </LinearLayout>
+
+
+</LinearLayout>

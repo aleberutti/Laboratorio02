@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".AltaPedido">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pedido nro."
+                android:textSize="17sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correo"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:hint="Correo electrónico"
+                android:inputType="textEmailAddress"/>
+
+            <TextView
+                android:id="@+id/tvEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de entrega"
+                android:textSize="15sp"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbRetiroEnLocal"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:text="Retiro en \nsucursal"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/rbEnvioADomicilio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:text="Envio a \ndomicilio"
+                    android:textSize="15sp"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tvDireccionEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Direccion"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/etDireccionEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:hint="Domicilio"
+                android:inputType="textPostalAddress"/>
+
+            <TextView
+                android:id="@+id/tvHorarioEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Horario de entrega"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/etHorarioEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:hint="Horario de entrega"
+                android:inputType="datetime"/>
+
+            <ListView
+                android:id="@+id/lvListaProductos"
+                android:layout_width="match_parent"
+                android:layout_height="158dp"
+                android:choiceMode="singleChoice"
+                android:layout_weight="1">
+            </ListView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btAgregarProducto"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="Agregar producto"
+                    android:textSize="15sp"/>
+
+                <Button
+                    android:id="@+id/btQuitarProducto"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="Quitar producto"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:text="Costo total"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btConfirmar"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="Realizar pedido"
+                    android:textSize="17sp"
+                    />
+
+                <Button
+                    android:id="@+id/btVolver"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="Volver"
+                    android:textSize="17sp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+    
+</LinearLayout>
