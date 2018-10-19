@@ -8,5 +8,10 @@
     <string name="costo">Total del pedido: $ %.2f</string>
     <string name="canal_estado_nombre">Canal 1</string>
     <string name="canal_estado_descr">Canal Descr 1</string>
+    <string name="retirar">Retirar por defecto</string>
+    <string name="retirar2">El pedido es para retirar</string>
+    <string name="email">Correo electrónico</string>
+    <string name="email2">Se usará por defecto</string>
+    <string name="config">Configuración</string>
     <string name="default_notification_channel_id">CANAL01</string>
 </resources>
