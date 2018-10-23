@@ -13,5 +13,10 @@
     <string name="email">Correo electrónico</string>
     <string name="email2">Se usará por defecto</string>
     <string name="config">Configuración</string>
+    <string name="btnCategorias">Categorías</string>
+    <string name="tvCategorias">Nombre de la cateforía</string>
+    <string name="btnGuardar">Guardar</string>
+    <string name="btnVolver">VOLVER</string>
+    <string name ="ErrorHttp">ERROR: No se pudo ejecutar la operación</string>
     <string name="default_notification_channel_id">CANAL01</string>
 </resources>
