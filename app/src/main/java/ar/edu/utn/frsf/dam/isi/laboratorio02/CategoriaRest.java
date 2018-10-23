@@ -19,7 +19,7 @@ import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 
 public class CategoriaRest {
 
-    //Realiza el POST de una categoria el seridor REST
+    //Realiza el POST de una categoria el servidor REST
     public void crearCategoria(Categoria c){
 
         //Variables de conexión y stream lectura-escritura
@@ -33,8 +33,8 @@ public class CategoriaRest {
             categoriaJSON.put("nombre", c.getNombre());
 
 
-            //Abrimos conexion - cambiar IP para probar-
-            URL url = new URL("http://192.168.0.15:5000/categorias");
+            //Abrimos conexión - cambiar IP para probar
+            URL url = new URL("http://192.168.0.12:3000/categorias");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setChunkedStreamingMode(0);
             urlConnection.setRequestMethod("POST");
@@ -48,7 +48,7 @@ public class CategoriaRest {
             printOut.write(jsonData);
             printOut.flush();
 
-            //Leemos la respuesta y analizamos el codigo
+            //Leemos la respuesta y analizamos el código
             in = new BufferedInputStream(urlConnection.getInputStream());
             InputStreamReader isw = new InputStreamReader(in);
             StringBuilder sb = new StringBuilder();
