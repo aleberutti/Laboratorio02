@@ -16,6 +16,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
@@ -52,7 +55,18 @@ public class ListaProductos extends AppCompatActivity {
         cmbProductosCategoria = (Spinner) findViewById(R.id.cmbProductosCategoria);
         lstProductos = (ListView) findViewById(R.id.lstProductos);
 
-        cmbAdapter= new ArrayAdapter<Categoria>(this, android.R.layout.simple_spinner_item, pr.getCategorias());
+        CategoriaRest catRest = new CategoriaRest();
+        Categoria[] cats = new Categoria[0];
+        try {
+            cats = catRest.listarTodas()
+                    .toArray(new Categoria[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        cmbAdapter= new ArrayAdapter<Categoria>(this, android.R.layout.simple_spinner_item, cats);
         cmbAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cmbProductosCategoria.setAdapter(cmbAdapter);
 
