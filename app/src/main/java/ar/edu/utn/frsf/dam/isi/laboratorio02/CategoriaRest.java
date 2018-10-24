@@ -109,6 +109,7 @@ public class CategoriaRest {
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("Accept-Type","application/json");
         urlConnection.setRequestMethod("GET");
+        urlConnection.setDoOutput(true);
 
         // Leer la respuesta
         in = new BufferedInputStream(urlConnection.getInputStream());
@@ -137,10 +138,10 @@ public class CategoriaRest {
             for (int i = 0; i < listaCategorias.length(); i++){
                 Categoria cat = new Categoria();
 
-                JSONObject object = listaCategorias.getJSONObject(i);
+                JSONArray object = (JSONArray) listaCategorias.get(i);
 
-                cat.setId(object.getInt("id"));
-                cat.setNombre(object.getString("nombre"));
+                cat.setId(object.getJSONObject(i).getInt("id"));
+                cat.setNombre(object.getJSONObject(i).getString("nombre"));
 
                 resultado.add(cat);
             }
@@ -154,6 +155,9 @@ public class CategoriaRest {
         if(urlConnection !=null)urlConnection.disconnect();
 
         //retornar resultado
+
+        System.out.println("EL RESULT ES: " + resultado.get(0));
+
         return resultado;
 
     }
