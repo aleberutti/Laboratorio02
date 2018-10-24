@@ -107,8 +107,9 @@ public class CategoriaRest {
         // GESTIONAR LA CONEXION
         URL url = new URL("http://192.168.0.12:3000/categorias");
         urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestProperty("Accept-Type","application/json");
+        urlConnection.setChunkedStreamingMode(0);
         urlConnection.setRequestMethod("GET");
+        urlConnection.setRequestProperty("Accept-Type","application/json");
         urlConnection.setDoOutput(true);
 
         // Leer la respuesta
@@ -138,10 +139,13 @@ public class CategoriaRest {
             for (int i = 0; i < listaCategorias.length(); i++){
                 Categoria cat = new Categoria();
 
-                JSONArray object = (JSONArray) listaCategorias.get(i);
+                JSONObject object = listaCategorias.getJSONObject(i);
 
-                cat.setId(object.getJSONObject(i).getInt("id"));
-                cat.setNombre(object.getJSONObject(i).getString("nombre"));
+                int id = object.getInt("id");
+                String name = object.getString("name");
+
+                cat.setId(id);
+                cat.setNombre(name);
 
                 resultado.add(cat);
             }
@@ -149,6 +153,7 @@ public class CategoriaRest {
         }else{
             System.out.println("ERROR: No se pudo ejecutar la operación de recuperar las categorias");
         }
+
 
         //NO OLVIDAR CERRAR inputStream y conexion
         if(in!=null) in.close();
