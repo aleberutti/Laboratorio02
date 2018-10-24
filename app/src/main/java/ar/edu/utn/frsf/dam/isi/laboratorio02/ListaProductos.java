@@ -16,6 +16,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
@@ -31,6 +34,7 @@ public class ListaProductos extends AppCompatActivity {
     private EditText cant;
     private Button pedir;
     private Producto selected;
+    private Categoria[] cats = new Categoria[0];
 
 
     @Override
@@ -52,28 +56,53 @@ public class ListaProductos extends AppCompatActivity {
         cmbProductosCategoria = (Spinner) findViewById(R.id.cmbProductosCategoria);
         lstProductos = (ListView) findViewById(R.id.lstProductos);
 
-        cmbAdapter= new ArrayAdapter<Categoria>(this, android.R.layout.simple_spinner_item, pr.getCategorias());
-        cmbAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        cmbProductosCategoria.setAdapter(cmbAdapter);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                CategoriaRest catRest = new CategoriaRest();
 
-
-        lstAdapter = new ArrayAdapter<Producto>(this,android.R.layout.simple_list_item_single_choice, pr.buscarPorCategoria((Categoria)cmbProductosCategoria.getItemAtPosition(0)));
-        lstProductos.setAdapter(lstAdapter);
-
-        cmbProductosCategoria.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
-                        lstAdapter.clear();
-                        lstAdapter.addAll(pr.buscarPorCategoria((Categoria)parent.getItemAtPosition(i)));
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
+                try {
+                    cats = catRest.listarTodas()
+                            .toArray(new Categoria[0]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-        );
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        cmbAdapter = new ArrayAdapter<Categoria>(ListaProductos.this, android.R.layout.simple_spinner_item, cats);
+                        cmbAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        cmbProductosCategoria.setAdapter(cmbAdapter);
+
+                        lstAdapter = new ArrayAdapter<Producto>(ListaProductos.this, android.R.layout.simple_list_item_single_choice, pr.buscarPorCategoria((Categoria) cmbProductosCategoria.getItemAtPosition(0)));
+                        lstProductos.setAdapter(lstAdapter);
+
+                        cmbProductosCategoria.setOnItemSelectedListener(
+                                new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+                                        lstAdapter.clear();
+                                        lstAdapter.addAll(pr.buscarPorCategoria((Categoria) parent.getItemAtPosition(i)));
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                }
+                        );
+
+                    }
+                });
+            }
+        };
+
+        Thread hiloCargarCombo = new Thread(r);
+        hiloCargarCombo.start();
 
         lstProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
