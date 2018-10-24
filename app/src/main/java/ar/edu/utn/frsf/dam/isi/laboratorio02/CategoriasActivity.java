@@ -34,6 +34,7 @@ public class CategoriasActivity extends AppCompatActivity {
                     Runnable run = new Runnable() {
                         @Override
                         public void run() {
+
                             cr.crearCategoria(new Categoria(textoCat.getText().toString()));
 
 

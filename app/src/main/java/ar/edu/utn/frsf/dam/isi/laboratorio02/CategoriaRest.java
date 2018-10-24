@@ -26,6 +26,7 @@ public class CategoriaRest {
     //Realiza el POST de una categoria el servidor REST
     public void crearCategoria(Categoria c){
 
+
         //Variables de conexión y stream lectura-escritura
         HttpURLConnection urlConnection= null;
         DataOutputStream printOut= null;
@@ -38,12 +39,13 @@ public class CategoriaRest {
 
 
             //Abrimos conexión - cambiar IP para probar
-            URL url = new URL("http://192.168.0.12:3000/categorias");
+            URL url = new URL("http://192.168.0.15:5000/categorias");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setChunkedStreamingMode(0);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setDoOutput(true);
+
 
             //Obtener el stream de salida para escribir el JSON
             printOut = new DataOutputStream(urlConnection.getOutputStream());
@@ -99,18 +101,17 @@ public class CategoriaRest {
     //Recupera las categorias del servidor REST
     public List<Categoria> listarTodas() throws IOException, JSONException {
 
-        // inicializar variables
+        // Inicializar variables
         List<Categoria> resultado = new ArrayList<>();
         HttpURLConnection urlConnection = null;
         InputStream in =null;
 
-        // GESTIONAR LA CONEXION
-        URL url = new URL("http://192.168.0.12:3000/categorias");
+        // Abrimos la conexión - cambiar IP para probar
+        URL url = new URL("http://192.168.0.15:5000/categorias");
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setChunkedStreamingMode(0);
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("Accept-Type","application/json");
-        urlConnection.setDoOutput(true);
 
         // Leer la respuesta
         in = new BufferedInputStream(urlConnection.getInputStream());
@@ -119,8 +120,7 @@ public class CategoriaRest {
         int data = isw.read();
 
         // verificar el codigo de respuesta
-        if( urlConnection.getResponseCode() ==200 ||
-                urlConnection.getResponseCode()==201){
+        if( urlConnection.getResponseCode() ==200 || urlConnection.getResponseCode()==201){
             while (data != -1) {
                 char current = (char) data;
                 sb.append(current);
@@ -142,7 +142,7 @@ public class CategoriaRest {
                 JSONObject object = listaCategorias.getJSONObject(i);
 
                 int id = object.getInt("id");
-                String name = object.getString("name");
+                String name = object.getString("nombre");
 
                 cat.setId(id);
                 cat.setNombre(name);

@@ -34,6 +34,7 @@ public class ListaProductos extends AppCompatActivity {
     private EditText cant;
     private Button pedir;
     private Producto selected;
+    private Categoria[] cats = new Categoria[0];
 
 
     @Override
@@ -59,7 +60,7 @@ public class ListaProductos extends AppCompatActivity {
             @Override
             public void run() {
                 CategoriaRest catRest = new CategoriaRest();
-                Categoria[] cats = new Categoria[0];
+
                 try {
                     cats = catRest.listarTodas()
                             .toArray(new Categoria[0]);
@@ -69,12 +70,11 @@ public class ListaProductos extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                final Categoria[] finalCats = cats;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
-                        cmbAdapter = new ArrayAdapter<Categoria>(ListaProductos.this, android.R.layout.simple_spinner_item, finalCats);
+                        cmbAdapter = new ArrayAdapter<Categoria>(ListaProductos.this, android.R.layout.simple_spinner_item, cats);
                         cmbAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         cmbProductosCategoria.setAdapter(cmbAdapter);
 
