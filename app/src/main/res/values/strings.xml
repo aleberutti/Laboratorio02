@@ -16,7 +16,17 @@
     <string name="btnCategorias">Categorías</string>
     <string name="tvCategorias">Nombre de la cateforía</string>
     <string name="btnGuardar">Guardar</string>
-    <string name="btnVolver">VOLVER</string>
-    <string name ="ErrorHttp">ERROR: No se pudo ejecutar la operación</string>
+    <string name="btnVolver">Volver</string>
+    <string name="ErrorHttp">ERROR: No se pudo ejecutar la operación</string>
     <string name="default_notification_channel_id">CANAL01</string>
+    <string name="tgCrear">Crear producto nuevo</string>
+    <string name="tvBuscar">Buscar producto por ID</string>
+    <string name="tgBuscar">Buscar producto</string>
+    <string name="btnBuscar">Buscar por ID</string>
+    <string name="tvDatos">Datos del producto</string>
+    <string name="tvNombre">Nombre</string>
+    <string name="tvDesc">Descripción</string>
+    <string name="tvPrecio">Precio</string>
+    <string name="tvCategoria">Categoría</string>
+    <string name="btnBorrar">Borrar</string>
 </resources>
