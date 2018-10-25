@@ -9,6 +9,8 @@
 
     <ToggleButton
         android:id="@+id/crearOBuscar"
+        android:textOn="Buscar por ID y actualizar"
+        android:textOff="Crear producto nuevo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tgCrear" />
