@@ -2,13 +2,19 @@ package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRetrofit;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
@@ -24,6 +30,7 @@ public class GestionProductoActivity extends AppCompatActivity {
     private EditText edtNombre, edtDesc, edtPrecio, edtBuscarPorID;
     private Spinner spCategorias;
     private Boolean flagActualizacion;
+    private ArrayAdapter<Categoria> adaptadorspin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,40 @@ public class GestionProductoActivity extends AppCompatActivity {
         btnBorrar.setEnabled(false);
         edtBuscarPorID.setEnabled(false);
 
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                CategoriaRest catRest = new CategoriaRest();
+                Categoria[] cats = null;
+                try {
+                    cats = catRest.listarTodas().toArray(new Categoria[0]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                final Categoria[] catsAux = cats;
+                try {
+                    cats = catRest.listarTodas().toArray(new Categoria[0]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        adaptadorspin = new ArrayAdapter<Categoria>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, catsAux);
+                        spCategorias.setAdapter(adaptadorspin);
+                        spCategorias.setSelection(0);
+                    }
+                });
+            }
+        };
+        Thread hiloCargarComo = new Thread(r);
+        hiloCargarComo.start();
 
         crearOBuscar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
@@ -103,7 +144,7 @@ public class GestionProductoActivity extends AppCompatActivity {
                         edtNombre.setText(response.body().getNombre());
                         edtDesc.setText(response.body().getDescripcion());
                         edtPrecio.setText(response.body().getPrecio().toString());
-                        spCategorias.setSelection(response.body().getCategoria().getId());
+                        spCategorias.setSelection(response.body().getCategoria().getId()-1);
                     }
 
                     @Override

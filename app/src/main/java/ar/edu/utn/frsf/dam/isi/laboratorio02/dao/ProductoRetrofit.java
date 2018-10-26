@@ -5,7 +5,9 @@ import java.util.List;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -19,10 +21,10 @@ public interface ProductoRetrofit {
     @POST("productos/")
     Call<Producto> crearProducto(@Body Producto p);
 
-    @POST("productos/{id}")
+    @PATCH("productos/{id}")
     Call<Producto> actualizarProducto(@Path("id") int idProducto,@Body Producto p);
 
-    @POST("productos/{id}")
+    @DELETE("productos/{id}")
     Call<Producto> borrar(@Path("id") int idProducto);
 
 }

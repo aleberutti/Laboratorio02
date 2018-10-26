@@ -69,7 +69,7 @@ public class ListaProductos extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                System.out.println("\n asdasdsd \n" + cats.length);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
