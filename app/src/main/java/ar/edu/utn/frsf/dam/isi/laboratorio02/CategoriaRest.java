@@ -39,7 +39,7 @@ public class CategoriaRest {
 
 
             //Abrimos conexión - cambiar IP para probar
-            URL url = new URL("http://192.168.0.15:5000/categorias");
+            URL url = new URL("http://10.0.2.2:3000/categorias/");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setChunkedStreamingMode(0);
             urlConnection.setRequestMethod("POST");
@@ -107,7 +107,7 @@ public class CategoriaRest {
         InputStream in =null;
 
         // Abrimos la conexión - cambiar IP para probar
-        URL url = new URL("http://192.168.0.15:5000/categorias");
+        URL url = new URL("http://10.0.2.2:3000/categorias/");
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setChunkedStreamingMode(0);
         urlConnection.setRequestMethod("GET");
