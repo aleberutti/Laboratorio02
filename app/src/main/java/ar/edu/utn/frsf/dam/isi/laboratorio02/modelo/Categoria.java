@@ -1,11 +1,24 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
 import java.util.Objects;
 
+@Entity
 public class Categoria {
 
     private Integer id;
     private String nombre;
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+    @Embedded(prefix = "dep_")
+    private Departamento trabajaEn;
+    @TypeConverters(EstadoConverter.class)
+    private Estado estado;
 
     public Categoria(Integer id, String nombre) {
         this.id = id;
