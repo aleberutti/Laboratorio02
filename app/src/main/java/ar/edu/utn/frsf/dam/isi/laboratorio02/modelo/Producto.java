@@ -1,11 +1,21 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
 import java.util.Objects;
 
+@Entity
 public class Producto {
 
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
     private String nombre;
+    @Embedded(prefix = "cat_")
+    private Categoria estaEn;
+
     private String descripcion;
     private Double precio;
     private Categoria categoria;

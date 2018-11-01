@@ -9,20 +9,21 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 
 @Dao
-public interface CategoriaDao {
+public interface ProductoDao {
 
-    @Query("SELECT * FROM Categoria")
-    List<Categoria> getAll();
+    @Query("SELECT * FROM Producto")
+    List<Producto> getAll();
 
     @Insert
-    long insert(Categoria cat);
+    long insert(Producto prod);
 
     @Update
-    void update(Categoria cat);
+    void update(Producto prod);
 
     @Delete
-    void delete(Categoria cat);
+    void delete(Producto prod);
 
 }

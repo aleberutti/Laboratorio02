@@ -10,15 +10,10 @@ import java.util.Objects;
 @Entity
 public class Categoria {
 
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
     private String nombre;
 
-    @PrimaryKey(autoGenerate = true)
-    private long id;
-    @Embedded(prefix = "dep_")
-    private Departamento trabajaEn;
-    @TypeConverters(EstadoConverter.class)
-    private Estado estado;
 
     public Categoria(Integer id, String nombre) {
         this.id = id;
