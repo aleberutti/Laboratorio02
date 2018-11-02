@@ -8,4 +8,5 @@ import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 public abstract class Database extends RoomDatabase {
     public abstract CategoriaDao categoriaDao();
     public abstract ProductoDao productoDao();
+    public abstract PedidoDao pedidoDao();
 }

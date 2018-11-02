@@ -14,11 +14,10 @@ public class Producto {
     private Integer id;
     private String nombre;
     @Embedded(prefix = "cat_")
-    private Categoria estaEn;
+    private Categoria categoria;
 
     private String descripcion;
     private Double precio;
-    private Categoria categoria;
 
     public Producto(String nombre, String descripcion, Double precio, Categoria categoria) {
         this.nombre = nombre;
