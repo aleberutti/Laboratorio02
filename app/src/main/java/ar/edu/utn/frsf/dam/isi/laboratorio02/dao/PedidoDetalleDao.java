@@ -8,22 +8,20 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
-
 @Dao
-public interface PedidoDetalle {
+public interface PedidoDetalleDao {
 
     @Query("SELECT * FROM PedidoDetalle")
-    List<PedidoDetalle> getAll();
+    List<PedidoDetalleDao> getAll();
 
     @Insert
-    long insert(PedidoDetalle ped_det);
+    long insert(PedidoDetalleDao ped_det);
 
     @Update
-    void update(PedidoDetalle ped_det);
+    void update(PedidoDetalleDao ped_det);
 
     @Delete
-    void delete(PedidoDetalle ped_det);
+    void delete(PedidoDetalleDao ped_det);
 
 
 }

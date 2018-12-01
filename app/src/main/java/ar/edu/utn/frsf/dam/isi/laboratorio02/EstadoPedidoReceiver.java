@@ -14,6 +14,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
 
@@ -21,6 +25,9 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
 
     private static final String CANAL_MENSAJES_ID = "CANAL01";
     private PedidoRepository repositorioPedido = new PedidoRepository();
+    private static List<Pedido> LISTA_PEDIDOS = new ArrayList<>();
+
+    private PedidoDao pedidoDao;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -30,7 +37,7 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
         int idAux = intent.getIntExtra("ID_PEDIDO", -1);
         if (idAux!=-1){
             if (intent.getAction().equals("ESTADO_LISTO")) {
-                Pedido pedido = repositorioPedido.buscarPorId(idAux);
+                Pedido pedido = buscarPorId(idAux);
 
                 Intent destino = new Intent(context, AltaPedido.class);
                 destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -53,7 +60,8 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
                 notificationManager.notify(99, mBuilder.build());
             }
         }else {
-            Pedido pedido = repositorioPedido.buscarPorId(id);
+
+            Pedido pedido = buscarPorId(id);
 
             Intent destino = new Intent(context, AltaPedido.class);
             destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -103,5 +111,23 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
 
     }
 
-//      throw new UnsupportedOperationException("Not yet implemented");
+    private List<Pedido> recuperarPedidoId(){
+        List<Pedido> pedidosLista = pedidoDao.getAll();
+        return pedidosLista;
+    }
+
+    public Pedido buscarPorId(Integer id){
+
+        LISTA_PEDIDOS = recuperarPedidos();
+
+        for(Pedido p: LISTA_PEDIDOS){
+            if(p.getId().equals(id)) return p;
+        }
+        return null;
+    }
+
+    private List<Pedido> recuperarPedidos(){
+        List<Pedido> pedidosLista = pedidoDao.getAll();
+        return pedidosLista;
+    }
 }

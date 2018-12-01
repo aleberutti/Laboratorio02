@@ -9,4 +9,5 @@ public abstract class Database extends RoomDatabase {
     public abstract CategoriaDao categoriaDao();
     public abstract ProductoDao productoDao();
     public abstract PedidoDao pedidoDao();
+    public abstract PedidoDetalleDao pedidoDetalleDao();
 }

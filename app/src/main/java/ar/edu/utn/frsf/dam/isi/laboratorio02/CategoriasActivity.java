@@ -8,13 +8,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.CategoriaDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
 
 public class CategoriasActivity extends AppCompatActivity {
 
     private EditText textoCat;
     private Button btnCrear, btnMenu;
     private CategoriaRest cr;
+
+    private CategoriaDao categoriaDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +33,15 @@ public class CategoriasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!textoCat.getText().toString().isEmpty()){
-                    cr = new CategoriaRest();
+                    //cr = new CategoriaRest();
 
                     Runnable run = new Runnable() {
                         @Override
                         public void run() {
 
-                            cr.crearCategoria(new Categoria(textoCat.getText().toString()));
-
+                            //cr.crearCategoria(new Categoria(textoCat.getText().toString()));
+                            Categoria categ = new Categoria(textoCat.getText().toString());
+                            crearCategoria(categ);
 
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -66,5 +71,9 @@ public class CategoriasActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void crearCategoria(Categoria unaCategoria) {
+        categoriaDao.insert(unaCategoria);
     }
 }

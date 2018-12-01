@@ -25,7 +25,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoDao;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoDetalleDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
@@ -50,6 +53,10 @@ public class AltaPedido extends AppCompatActivity {
 
     private boolean retirar = false;
     private double costo = 0.0;
+
+    //Daos
+    private PedidoDao pedidoDao;
+    private PedidoDetalleDao pedidoDetalleDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +221,8 @@ public class AltaPedido extends AppCompatActivity {
                     unPedido.setDetalle(listaProds);
                     unPedido.setEstado(Pedido.Estado.REALIZADO);
 
+                    crearPedido(unPedido);
+
                     Intent historial = new Intent(AltaPedido.this, HistorialPedidos.class);
                     startActivity(historial);
 
@@ -283,6 +292,9 @@ public class AltaPedido extends AppCompatActivity {
                         unPedido.setRetirar(retirar);
                         repositorioPedido.guardarPedido(unPedido);
 
+                        //Persisto
+                        crearPedido(unPedido);
+
                         Runnable r = new Runnable() {
                             @Override
                             public void run() {
@@ -339,6 +351,9 @@ public class AltaPedido extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK && requestCode==8){
 
             PedidoDetalle detalle = new PedidoDetalle(data.getExtras().getInt("cantidad"), repositorioProducto.buscarPorId(data.getExtras().getInt("id")));
+
+            //persisto
+            crearPedidoDetalle(detalle);
 
             listaProds.add(detalle);
             Resources res = getResources();
@@ -410,5 +425,11 @@ public class AltaPedido extends AppCompatActivity {
         }
     }
 
+    private void crearPedido(Pedido unPedido) {
+        pedidoDao.insert(unPedido);
+    }
 
+    private void crearPedidoDetalle(PedidoDetalle unPedidoDetalle) {
+        pedidoDetalleDao.insert((PedidoDetalleDao) unPedidoDetalle);
+    }
 }

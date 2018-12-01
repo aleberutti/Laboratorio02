@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.lista.DataModel;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.lista.PedidoAdapter;
@@ -21,9 +22,10 @@ import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
 
 public class HistorialPedidos extends AppCompatActivity {
 
-    PedidoRepository pr = new PedidoRepository();
     private ListView lvHistorialPedidos;
     private Button btNuevo, btMenu;
+
+    private PedidoDao pedidoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,8 @@ public class HistorialPedidos extends AppCompatActivity {
         btMenu = findViewById(R.id.btHistorialMenu);
 
         List <DataModel> lstdm = new ArrayList<DataModel>();
-        for (int p=0; p<pr.getLista().size(); p++){
-            Pedido ped = pr.getLista().get(p);
+        for (int p=0; p<recuperarPedidos().size(); p++){
+            Pedido ped = recuperarPedidos().get(p);
             lstdm.add(new DataModel(ped.getId(), ped.getEstado()));
         }
 
@@ -47,9 +49,9 @@ public class HistorialPedidos extends AppCompatActivity {
         lvHistorialPedidos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (pr.getLista().get(position).getEstado()==Pedido.Estado.REALIZADO || pr.getLista().get(position).getEstado()==Pedido.Estado.ACEPTADO) {
+                if (recuperarPedidos().get(position).getEstado()==Pedido.Estado.REALIZADO || recuperarPedidos().get(position).getEstado()==Pedido.Estado.ACEPTADO) {
                     Intent inte = new Intent(HistorialPedidos.this, AltaPedido.class);
-                    inte.putExtra("Code", pr.getLista().get(position).getId());
+                    inte.putExtra("Code", recuperarPedidos().get(position).getId());
                     startActivity(inte);
                 }else{
                     Toast.makeText(HistorialPedidos.this,"El pedido no se puede modificar", Toast.LENGTH_LONG).show();
@@ -74,6 +76,11 @@ public class HistorialPedidos extends AppCompatActivity {
             }
         });
 
+    }
+
+    private List<Pedido> recuperarPedidos(){
+        List<Pedido> pedidosLista = pedidoDao.getAll();
+        return pedidosLista;
     }
 
 

@@ -21,6 +21,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.CategoriaDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.*;
 
@@ -36,6 +37,9 @@ public class ListaProductos extends AppCompatActivity {
     private Producto selected;
     private Categoria[] cats = new Categoria[0];
 
+    //daos
+
+    private CategoriaDao categoriaDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +63,23 @@ public class ListaProductos extends AppCompatActivity {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                CategoriaRest catRest = new CategoriaRest();
 
-                try {
-                    cats = catRest.listarTodas()
-                            .toArray(new Categoria[0]);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("\n asdasdsd \n" + cats.length);
+//                CategoriaRest catRest = new CategoriaRest();
+//
+//                try {
+//                    cats = catRest.listarTodas()
+//                            .toArray(new Categoria[0]);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
-                        cmbAdapter = new ArrayAdapter<Categoria>(ListaProductos.this, android.R.layout.simple_spinner_item, cats);
+                        cmbAdapter = new ArrayAdapter<Categoria>(ListaProductos.this, android.R.layout.simple_spinner_item, recuperarCategorias());
                         cmbAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         cmbProductosCategoria.setAdapter(cmbAdapter);
 
@@ -131,4 +136,10 @@ public class ListaProductos extends AppCompatActivity {
             }
         });
     }
+
+    private List<Categoria> recuperarCategorias(){
+        List<Categoria> categoriaLista = categoriaDao.getAll();
+        return categoriaLista;
+    }
+
 }

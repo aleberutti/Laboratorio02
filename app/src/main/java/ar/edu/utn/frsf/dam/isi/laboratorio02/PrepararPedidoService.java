@@ -9,12 +9,16 @@ import android.app.Service;
 
 import java.util.List;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
 
 public class PrepararPedidoService extends IntentService {
 
     private PedidoRepository repositorioPedido = new PedidoRepository();
+
+    private PedidoDao pedidoDao;
 
     public PrepararPedidoService() {
         super("PrepararPedidoService");
@@ -29,7 +33,9 @@ public class PrepararPedidoService extends IntentService {
             e.printStackTrace();
         }
 
-        List<Pedido> lista = repositorioPedido.getLista();
+//      List<Pedido> lista = repositorioPedido.getLista();
+
+        List<Pedido> lista = recuperarPedidos();
 
         for (Pedido p : lista) {
 
@@ -44,5 +50,10 @@ public class PrepararPedidoService extends IntentService {
             }
         }
 
+    }
+
+    private List<Pedido> recuperarPedidos(){
+        List<Pedido> pedidosLista = pedidoDao.getAll();
+        return pedidosLista;
     }
 }
